@@ -12,13 +12,13 @@
 
 **Bukti di skenario:** [Tim menemukan bahwa kode mereka menulis asumsi seperti # network is always reliable, no need for retry dan tidak ada timeout sama sekali pada pemanggilan antar service (modul pesanan memanggil modul pembayaran dan menunggu tanpa batas waktu).]
 
-**Kenapa ini keliru:** [Jaringan antarlayanan atau third-party payment gateway bersifat nondeterministic. Gangguan seperti packet loss, penurunan bandwidth, atau unresponsive server bisa terjadi sewaktu-waktu. Menunggu tanpa batas (infinite wait) mengasumsikan jaringan pasti 100% selalu berhasil dan merespons tepat waktu.]
+**Kenapa ini keliru:** [Di dunia nyata, jaringan komputer itu nggak pernah bisa dipastikan 100% lancar. Bisa aja tiba-tiba ada packet loss, koneksi lambat, atau API dari pihak ketiga (seperti payment gateway) lagi down. Kalau kode kita dibuat nunggu balasan tanpa batas waktu (infinite wait), kita seolah-olah menganggap jaringan bakal selalu aman dan pasti langsung membalas.]
 
-**Dampak ke FoodGo:** [Saat layanan pembayaran delay atau down, thread pemanggil pada modul pesanan terblokir (blocking thread) tanpa batas. Ketika lonjakan pesanan terjadi di jam makan siang, thread pool web server habis (resource exhaustion), permintaan baru langsung timeout, hingga server backend crash total dan butuh restart manual.]
+**Dampak ke FoodGo:** [Pas modul pembayaran lagi lemot atau unresponsive, thread di modul pesanan bakal tertahan dan terus nungguin tanpa kepastian. Begitu ada lonjakan transaksi di jam makan siang, stok thread pool di web server langsung ludes. Akibatnya, pesanan baru yang masuk kena timeout, server kehabisan memori, lalu backend langsung crash total sampai harus di-restart manual.]
 
-**Solusi desain awal:** [Menerapkan Timeout eksplisit pada setiap pemanggilan I/O atau API eksternal, dikombinasikan dengan Retry Mechanism (menggunakan exponential backoff dan jitter). Menerapkan pola Circuit Breaker untuk memutus pemanggilan sementara jika failure rate modul pembayaran melewati batas toleransi.]
+**Solusi desain awal:** [Atur Timeout yang jelas di tiap pemanggilan API atau jaringan, biar kalau kelamaan nggak direspon bisa langsung diputus. Dipadu dengan mekanisme Retry pakai jeda berkala (exponential backoff + jitter). Selain itu, pasang pola Circuit Breaker—jadi kalau sistem mendeteksi modul pembayaran lagi sering gagal, aliran pemanggilan bisa diputus sementara otomatis biar server nggak makin terbeban.]
 
-**Trade-off:** [Mekanisme retry yang tidak terkontrol saat jaringan terganggu dapat memicu retry storm, yang memperberat beban jaringan dan justru mempercepat terjadinya cascading failure.]
+**Trade-off:** [Mekanisme retry ini ibarat pisau bermata dua. Kalau jaringan lagi benar-benar tumbang lalu sistem terus-terusan kirim retry ulang secara masif (retry storm), lalu lintas jaringan malah makin penuh dan bisa bikin komponen lain ikut tumbang (cascading failure).]
 
 ---
 
