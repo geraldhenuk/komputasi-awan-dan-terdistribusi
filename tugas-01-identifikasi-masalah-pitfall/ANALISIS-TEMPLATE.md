@@ -10,15 +10,15 @@
 
 ## Pitfall 1: [Fallacy — "The Network is Reliable"] — ditulis oleh [refito]
 
-**Bukti di skenario:** [Tim engineering menemukan kode yang memiliki asumsi seperti *“network is always reliable, no need for retry”*.]
+**Bukti di skenario:** Tim engineering menemukan kode yang memiliki asumsi seperti *“network is always reliable, no need for retry”*.
 
-**Kenapa ini keliru:** [Jaringan di dunia nyata tidak pernah 100% stabil. Menunggu tanpa timeout membuat sistem menggantung saat koneksi terganggu atau lambat.]
+**Kenapa ini keliru:** Jaringan di dunia nyata tidak pernah 100% stabil. Menunggu tanpa timeout membuat sistem menggantung saat koneksi terganggu atau lambat.
 
-**Dampak ke FoodGo:** [Thread server menumpuk karena terus menunggu respons pembayaran. Saat trafik naik di jam makan siang, resource server habis dan backend crash total.]
+**Dampak ke FoodGo:** Thread server menumpuk karena terus menunggu respons pembayaran. Saat trafik naik di jam makan siang, resource server habis dan backend crash total.
 
-**Solusi desain awal:** [Menambahkan timeout dan retry mechanism pada pemanggilan antar service. Bisa juga dipasang circuit breaker untuk memutus pemanggilan jika service pembayaran bermasalah.]
+**Solusi desain awal:** Menambahkan timeout dan retry mechanism pada pemanggilan antar service. Bisa juga dipasang circuit breaker untuk memutus pemanggilan jika service pembayaran bermasalah.
 
-**Trade-off:** [Retry yang terlalu banyak saat jaringan terganggu justru bisa memperberat beban server dan memperparah kemacetan lalu lintas data.]
+**Trade-off:** Retry yang terlalu banyak saat jaringan terganggu justru bisa memperberat beban server dan memperparah kemacetan lalu lintas data.
 
 ---
 
