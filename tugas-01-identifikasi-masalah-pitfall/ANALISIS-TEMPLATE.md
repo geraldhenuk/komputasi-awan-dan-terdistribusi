@@ -4,7 +4,7 @@
 
 | Nama | NIM | Kontribusi |
 |---|---|---|
-| [refito] | [nim] | [pitfall/bagian yang dikerjakan] |
+| [refito] | [103072430002] | [pitfall/bagian yang dikerjakan] |
 | [gerald] | [nim] | [pitfall/bagian yang dikerjakan] |
 | [farisa] | [103072400051] | [pitfall/bagian yang dikerjakan] |
 
