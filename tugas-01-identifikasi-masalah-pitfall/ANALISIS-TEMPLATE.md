@@ -4,21 +4,21 @@
 
 | Nama | NIM | Kontribusi |
 |---|---|---|
-| [refito] | [103072430002] | [pitfall/bagian yang dikerjakan] |
+| [refito] | [103072430002] | [Pitfall 1: "The Network is Reliable" (Timeout, Retry, Circuit Breaker)] |
 | [gerald] | [nim] | [pitfall/bagian yang dikerjakan] |
 | [farisa] | [103072400051] | [pitfall/bagian yang dikerjakan] |
 
-## Pitfall 1: [nama pitfall] — ditulis oleh [nama]
+## Pitfall 1: [Fallacy — "The Network is Reliable"] — ditulis oleh [refito]
 
-**Bukti di skenario:** [kutip/paraphrase bagian skenario]
+**Bukti di skenario:** [Tim menemukan bahwa kode mereka menulis asumsi seperti # network is always reliable, no need for retry dan tidak ada timeout sama sekali pada pemanggilan antar service (modul pesanan memanggil modul pembayaran dan menunggu tanpa batas waktu).]
 
-**Kenapa ini keliru:** []
+**Kenapa ini keliru:** [Jaringan antarlayanan atau third-party payment gateway bersifat nondeterministic. Gangguan seperti packet loss, penurunan bandwidth, atau unresponsive server bisa terjadi sewaktu-waktu. Menunggu tanpa batas (infinite wait) mengasumsikan jaringan pasti 100% selalu berhasil dan merespons tepat waktu.]
 
-**Dampak ke FoodGo:** [mekanisme kegagalan konkret]
+**Dampak ke FoodGo:** [Saat layanan pembayaran delay atau down, thread pemanggil pada modul pesanan terblokir (blocking thread) tanpa batas. Ketika lonjakan pesanan terjadi di jam makan siang, thread pool web server habis (resource exhaustion), permintaan baru langsung timeout, hingga server backend crash total dan butuh restart manual.]
 
-**Solusi desain awal:** [usulan solusi]
+**Solusi desain awal:** [Menerapkan Timeout eksplisit pada setiap pemanggilan I/O atau API eksternal, dikombinasikan dengan Retry Mechanism (menggunakan exponential backoff dan jitter). Menerapkan pola Circuit Breaker untuk memutus pemanggilan sementara jika failure rate modul pembayaran melewati batas toleransi.]
 
-**Trade-off:** [apa yang dikorbankan/risiko dari solusi ini]
+**Trade-off:** [Mekanisme retry yang tidak terkontrol saat jaringan terganggu dapat memicu retry storm, yang memperberat beban jaringan dan justru mempercepat terjadinya cascading failure.]
 
 ---
 
