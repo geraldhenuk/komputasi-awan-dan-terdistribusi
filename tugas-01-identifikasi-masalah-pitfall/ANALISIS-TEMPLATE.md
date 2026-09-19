@@ -6,7 +6,7 @@
 |---|---|---|
 | [Refito Rahmat Firmansyah] | [103072430002] | [pitfall 1] |
 | [Gerald Farellino Henuk] | [103072400116] | [Pitfall 2] |
-| [farisa] | [103072400051] | [pitfall/bagian yang dikerjakan] |
+| [Farisa Tunnadhiroh] | [103072400051] | [pitfall 3] |
 
 ## Pitfall 1: [Fallacy — "The Network is Reliable"] — ditulis oleh [refito]
 
