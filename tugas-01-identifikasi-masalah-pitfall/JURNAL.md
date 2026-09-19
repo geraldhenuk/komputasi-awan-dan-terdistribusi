@@ -18,6 +18,10 @@
 
 - Farisa mengomentari analisis Refito: Identifikasinya sudah tepat dengan bukti di skenario. Usulan pakai Circuit Breaker juga sangat tepat untuk pencegahan agar server tidak crash beruntun.
 
+- Fito mengomentari analisis Gerald: saya setuju dengan solusi load balancer, tetapi perlu dipikirkan juga biaya operasionalnya agar tidak terlalu membengkak.
+
+- Fito mengomentari analisis Farisa: menurut saya, penambahan timeout sudah tepat, tinggal dipastikan lagi batas waktunya agar pengguna tidak menunggu terlalu lama.
+
 ## Log Penggunaan AI (Level 2)
 
 > Wajib diisi sesuai kebijakan Level 2 di [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md). Tulis "Tidak memakai AI" pada baris pertama jika memang tidak dipakai. Hanya untuk brainstorming ide/outline — bukan untuk kode/analisis/teks akhir.
