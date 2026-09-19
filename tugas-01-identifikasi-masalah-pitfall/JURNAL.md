@@ -2,7 +2,7 @@
 
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
 
-## [Tanggal diskusi 1]
+## [Sabtu, 19 September 2026]
 - Peserta: Gerald, Farisa, Fito
 - Poin diskusi: Membedah masing gmasing pitfall
 - Perbedaan pendapat (jika ada): ...
@@ -13,6 +13,14 @@
 ## Review Silang
 - Gerald mengomentari analisis Refito: saya juga setuju dengan pembahasan retry, tetapi jumlah retry perlu dibatasi supaya tidak malah menambah beban server.
 - Gerald mengomentari analisis Farisa: menurut saya, penggunaan idempotency menjadi hal penting supaya masalah tersebut bisa dicegah.
+
+- Farisa mengomentari analisis Gerald: Analisis SPOF sudah tepat. Penjelasan soal impact saat server monolitik crash sudah jelas. Tambahan poin biaya operasional di bagian trade-off juga realistis untuk startup ini.
+
+- Farisa mengomentari analisis Refito: Identifikasinya sudah tepat dengan bukti di skenario. Usulan pakai Circuit Breaker juga sangat tepat untuk pencegahan agar server tidak crash beruntun.
+
+- Fito mengomentari analisis Gerald: saya setuju dengan solusi load balancer, tetapi perlu dipikirkan juga biaya operasionalnya agar tidak terlalu membengkak.
+
+- Fito mengomentari analisis Farisa: menurut saya, penambahan timeout sudah tepat, tinggal dipastikan lagi batas waktunya agar pengguna tidak menunggu terlalu lama.
 
 ## Log Penggunaan AI (Level 2)
 
