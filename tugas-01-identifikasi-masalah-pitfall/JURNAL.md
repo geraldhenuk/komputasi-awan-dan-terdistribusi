@@ -3,7 +3,7 @@
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
 
 ## [Tanggal diskusi 1]
-- Peserta: [nama-nama yang hadir]
+- Peserta: Gerald, Farisa, Fito
 - Poin diskusi: ...
 - Perbedaan pendapat (jika ada): ...
 
@@ -11,7 +11,8 @@
 - ...
 
 ## Review Silang
-- [Nama] mengomentari analisis [Nama lain]: ...
+- Gerald mengomentari analisis Refito: saya juga setuju dengan pembahasan retry, tetapi jumlah retry perlu dibatasi supaya tidak malah menambah beban server.
+- Gerald mengomentari analisis Farisa: menurut saya, penggunaan idempotency menjadi hal penting supaya masalah tersebut bisa dicegah.
 
 ## Log Penggunaan AI (Level 2)
 
