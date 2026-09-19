@@ -2,7 +2,7 @@
 
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
 
-## [Tanggal diskusi 1]
+## [Sabtu, 19 September 2026]
 - Peserta: Gerald, Farisa, Fito
 - Poin diskusi: ...
 - Perbedaan pendapat (jika ada): ...
