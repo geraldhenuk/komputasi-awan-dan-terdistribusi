@@ -28,9 +28,17 @@
 
 ---
 
-## Pitfall 3: [nama pitfall] — ditulis oleh [nama]
+## Pitfall 3: [Latency is Zero] — ditulis oleh [Farisa]
 
-(ulangi struktur di atas)
+**Bukti di skenario:** Modul pesanan memanggil modul pembayaran dan menunggu tanpa batas waktu, karena tidak ada timeout.
+
+**Kenapa ini keliru:** Pada sistem terdistribusi, pengiriman data lewat jaringan membutuhkan waktu (Latency), tidak sama seperti pemanggilan fungsi lokal di memori. 
+
+**Dampak ke FoodGo:** Tanpa timeout, thread di modul pesanan akan terus menunggu respons dari modul pembayaran. Pada jam sibuk, tumpukan panggilan yang saling menunggu membuat response time melonjak tajam. Request baru yang masuk ikut antre, performa aplikasi melambat secara dratis, hingga akhirnya terkena request timeout.
+
+**Solusi desain awal:** FoodGo harus menerapkan timeout pada komunikasi antarservice. Jika ada pembayaran belum merespons dalam kurun waktu yang ditentukan, request dianggap gagal atau diproses ulang menggunakan mekanisme retry.
+
+**Trade-off:** Timeout dapat menyebabkan request dianggap gagal meskipun pembayaran masih memproses transaksi. Jika ditambahkan mekanisme retry, juga menyebabkan transaksi ganda. Sehingga FoodGo perlu menggunakan mekanisme idempotency mencegah pembayaran ganda.
 
 ---
 
