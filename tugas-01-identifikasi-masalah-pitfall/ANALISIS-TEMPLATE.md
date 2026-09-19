@@ -12,7 +12,7 @@
 
 **Bukti di skenario:** [kutip/paraphrase bagian skenario]
 
-**Kenapa ini keliru:** [penjelasan]
+**Kenapa ini keliru:** []
 
 **Dampak ke FoodGo:** [mekanisme kegagalan konkret]
 
