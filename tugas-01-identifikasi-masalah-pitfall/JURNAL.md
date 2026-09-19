@@ -4,7 +4,7 @@
 
 ## [Tanggal diskusi 1]
 - Peserta: Gerald, Farisa, Fito
-- Poin diskusi: ...
+- Poin diskusi: Membedah masing gmasing pitfall
 - Perbedaan pendapat (jika ada): ...
 
 ## [Tanggal diskusi 2]
