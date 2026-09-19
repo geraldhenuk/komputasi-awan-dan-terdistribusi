@@ -1,3 +1,4 @@
+Tidak memakai AI
 # Jurnal Proses — Tugas 1
 
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
