@@ -10,15 +10,15 @@
 
 ## Pitfall 1: [Fallacy — "The Network is Reliable"] — ditulis oleh [refito]
 
-**Bukti di skenario:** [Tim menemukan bahwa kode mereka menulis asumsi seperti # network is always reliable, no need for retry dan tidak ada timeout sama sekali pada pemanggilan antar service (modul pesanan memanggil modul pembayaran dan menunggu tanpa batas waktu).]
+**Bukti di skenario:** [Tim engineering menemukan kode yang memiliki asumsi seperti *“network is always reliable, no need for retry”*.]
 
-**Kenapa ini keliru:** [Di dunia nyata, jaringan komputer itu nggak pernah bisa dipastikan 100% lancar. Bisa aja tiba-tiba ada packet loss, koneksi lambat, atau API dari pihak ketiga (seperti payment gateway) lagi down. Kalau kode kita dibuat nunggu balasan tanpa batas waktu (infinite wait), kita seolah-olah menganggap jaringan bakal selalu aman dan pasti langsung membalas.]
+**Kenapa ini keliru:** [Jaringan di dunia nyata tidak pernah 100% stabil. Menunggu tanpa timeout membuat sistem menggantung saat koneksi terganggu atau lambat.]
 
-**Dampak ke FoodGo:** [Pas modul pembayaran lagi lemot atau unresponsive, thread di modul pesanan bakal tertahan dan terus nungguin tanpa kepastian. Begitu ada lonjakan transaksi di jam makan siang, stok thread pool di web server langsung ludes. Akibatnya, pesanan baru yang masuk kena timeout, server kehabisan memori, lalu backend langsung crash total sampai harus di-restart manual.]
+**Dampak ke FoodGo:** [Thread server menumpuk karena terus menunggu respons pembayaran. Saat trafik naik di jam makan siang, resource server habis dan backend crash total.]
 
-**Solusi desain awal:** [Atur Timeout yang jelas di tiap pemanggilan API atau jaringan, biar kalau kelamaan nggak direspon bisa langsung diputus. Dipadu dengan mekanisme Retry pakai jeda berkala (exponential backoff + jitter). Selain itu, pasang pola Circuit Breaker—jadi kalau sistem mendeteksi modul pembayaran lagi sering gagal, aliran pemanggilan bisa diputus sementara otomatis biar server nggak makin terbeban.]
+**Solusi desain awal:** [Menambahkan timeout dan retry mechanism pada pemanggilan antar service. Bisa juga dipasang circuit breaker untuk memutus pemanggilan jika service pembayaran bermasalah.]
 
-**Trade-off:** [Mekanisme retry ini ibarat pisau bermata dua. Kalau jaringan lagi benar-benar tumbang lalu sistem terus-terusan kirim retry ulang secara masif (retry storm), lalu lintas jaringan malah makin penuh dan bisa bikin komponen lain ikut tumbang (cascading failure).]
+**Trade-off:** [Retry yang terlalu banyak saat jaringan terganggu justru bisa memperberat beban server dan memperparah kemacetan lalu lintas data.]
 
 ---
 
