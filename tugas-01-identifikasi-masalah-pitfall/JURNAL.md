@@ -7,8 +7,10 @@
 - Poin diskusi: Membedah masing gmasing pitfall
 - Perbedaan pendapat (jika ada): ...
 
-## [Tanggal diskusi 2]
-- ...
+## [Selasa, 22 September 2026]
+- Peserta: Gerald, Farisa, Fito
+- Poin diskusi: Mengisi Log Penggunaan Ai
+- Perbedaan pendapat (jika ada): ...
 
 ## Review Silang
 - Gerald mengomentari analisis Refito: saya juga setuju dengan pembahasan retry, tetapi jumlah retry perlu dibatasi supaya tidak malah menambah beban server.
