@@ -29,6 +29,6 @@ Tidak memakai AI
 
 | Tanggal | Tool AI | Prompt yang diberikan | Ringkasan saran/ide AI | Bagaimana diolah jadi tulisan/kode sendiri |
 
-|22.9.2026|Gemini Ai|Bantu berikan outline dan struktur jurnal proses serta pemetaan pitfall untuk tugas analisis FoodGo | Memberikan struktur templat jurnal dan opsi pembagian poin analisis.|Mengambil kerangka penulisan jurnal dan opsi solusinya, lalu menuliskan ulang seluruh isi diskusi, review silang, dan poin analisis menggunakan kalimat sendiri.|
+| 22.9.2026 | Gemini Ai | Bantu berikan outline dan struktur jurnal proses serta pemetaan pitfall untuk tugas analisis FoodGo | Memberikan struktur templat jurnal dan opsi pembagian poin analisis. | Mengambil kerangka penulisan jurnal dan opsi solusinya, lalu menuliskan ulang seluruh isi diskusi, review silang, dan poin analisis menggunakan kalimat sendiri.|
 
 | ... | ... | ... | ... | ... |
