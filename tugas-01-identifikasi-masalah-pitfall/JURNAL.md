@@ -1,10 +1,11 @@
+Tidak memakai AI
 # Jurnal Proses — Tugas 1
 
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
 
 ## [Sabtu, 19 September 2026]
 - Peserta: Gerald, Farisa, Fito
-- Poin diskusi: ...
+- Poin diskusi: Membedah masing gmasing pitfall
 - Perbedaan pendapat (jika ada): ...
 
 ## [Tanggal diskusi 2]
