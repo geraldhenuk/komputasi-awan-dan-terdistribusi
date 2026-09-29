@@ -47,3 +47,19 @@ Nomor 6 Penugasab kurir
 - Aktor & Komponen: Message Broker -> Delivery -> Aplikasi Kurir
 - Jenis Komunikasi: Asinkron
 - Eksekusi: Delivery menangkap event FoodIsPreparingEvent dari broker. Tanpa perlu tahu apa yang terjadi di Order atau Payment, Delivery langsung menjalankan algoritmanya untuk mencocokkan lokasi resto dengan kurir terdekat. Begitu ada kurir yang menerima, Delivery melempar event CourierAssignedEvent.
+
+4. Masalah coupling dari Tugas 1
+- Deployment Independen: Tim kurir atau resto bisa memperbarui service mereka tanpa perlu menghentikan (restart) Service Pesanan atau Pembayaran. Risk downtime total dapat dihindari.
+
+- Isolasi Kegagalan: Jika Service Notifikasi Kurir mengalami gangguan, proses pembayaran dan pembuatan pesanan di sisi pelanggan tetap berjalan lancar tanpa terhenti.
+
+- Eliminasi Resource Exhaustion: Keterlambatan di pemrosesan notifikasi tidak lagi menyedot thread pool milik Service Pesanan karena prosesnya dipisah oleh Message Broker.
+
+Trade-off
+- Kompleksitas Debugging & Tracing: Alur sistem tidak lagi linier. Menelusuri masalah saat terjadi kegagalan pengiriman pesan butuh alat tambahan seperti Distributed Tracing (misalnya Jaeger/Zipkin).
+
+- Eventually Consistent: Informasi penugasan kurir dan penerimaan pesanan resto tidak terjadi secara instan di detik yang sama persis (lag beberapa milidetik pada queue), sehingga konsistensi data bersifat eventual.
+
+- Overhead Operasional: Tim engineering FoodGo kini harus mengelola dan memantau komponen baru seperti API Gateway dan infrastruktur Message Broker.
+
+  
