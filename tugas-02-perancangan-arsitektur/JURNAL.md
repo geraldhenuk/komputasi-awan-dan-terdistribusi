@@ -1,9 +1,37 @@
 # Jurnal Proses — Tugas 2
 
-## [Tanggal]
-- Opsi arsitektur yang dipertimbangkan: ...
-- Kenapa akhirnya pilih [SOA/Pub-Sub]: ...
-- Revisi diagram (versi 1 → versi 2, apa yang berubah dan kenapa): ...
+## [29 September 2026]
+- Opsi arsitektur yang dipertimbangkan: 
+  - SOA -> service inti: Pesanan, Pembayaran, Katalog Resto.
+  - Pub-Sub -> notifikasi & event turunan: notifikasi resto, penugasan kurir, push ke pelanggan.
+  - Api Gateway -> pintu masuk pelanggan.
+  - Message Broker -> penghubung event.
+- Kenapa akhirnya pilih [SOA/Pub-Sub]: Karena,
+  1. SOA saja tidak cukup. Kalau semua komunikasi sinkron, Service Pesanan harus nunggu Service Kurir dan Service Resto. Kalau salah satu lambat/down, Pesanan ikut stuck - masalah pada Tugas 1 terulang.
+  2. Pub-Sub juga tidak cocok untuk semua. Proses Pembayaran dan cek menu membutuhkan respons langsung (sukses/gagal, harga valid/tidak). Kalau dipaksa event, pelanggan tidak dapat respons real-time.
+  3. Kombinasi:
+    - Request yang butuh respons segera -> sinkron lewat SOA.
+    - Proses turunan yang tidak perlu bloking -> asinkron lewat Pub-Sub.
+    - Service Pesanan cukup publish OrderPaid, tidak peduli siapa yg subscribe.
+- Revisi diagram (versi 1 → versi 2, apa yang berubah dan kenapa): Pada rancangan ini ada 4 service utama, yaitu Service Pesanan, Pembayaran, Katalog Resto, dan Kurir/Notifikasi. Message Broker digunakan sebagai perantara untuk komunikasi berbasis event. Komunikasi antara Pesanan dan Pembayaran dilakukan secara sinkron, sedangkan event OrderCreated dikirim secara asinkron melalui Message Broker.
+
+```mermaid
+graph LR
+    Customer[Pelanggan]
+
+    Order[Service Pesanan]
+    Payment[Service Pembayaran]
+    Catalog[Service Katalog Resto]
+    Notification[Service Kurir / Notifikasi]
+    Broker[(Message Broker)]
+
+    Customer -->|HTTP Request| Order
+    Customer -->|Request Data Menu| Catalog
+    Order -->|Request-Response<br/>Sinkron| Payment
+    Payment -->|Payment Result<br/>Sinkron| Order
+    Order -->|Publish OrderCreated<br/>Asinkron| Broker
+    Broker -->|Subscribe<br/>OrderCreated| Notification
+```
 
 ## Log Penggunaan AI (Level 2)
 
