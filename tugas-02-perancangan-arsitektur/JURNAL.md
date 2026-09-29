@@ -39,16 +39,11 @@ Nomor 4 Notifikasi
 - Eksekusi: Order yang mendengarkan event OrderPaidEvent langsung memperbarui status pesanan di database-nya menjadi PAID. Disaat bersamaan, Restaurant mengambil data pesanan, lalu mengontak tablet restoran secara langsung.
 
 Nomor 5 Restoran siapkan makanan
-Aktor & Komponen: Tablet Resto -> Restaurant -> Message Broker
-
-Jenis Komunikasi: Sinkron lalu asinkron 
-
-Eksekusi: Koki menekan tombol Terima & Siapkan Pesanan. Tablet mengirim HTTP POST ke Restaurant. Setelah status update di internal resto, Restaurant menerbitkan event FoodIsPreparingEvent ke Message Broker.
+- Aktor & Komponen: Tablet Resto -> Restaurant -> Message Broker
+- Jenis Komunikasi: Sinkron lalu asinkron 
+- Eksekusi: Koki menekan tombol Terima & Siapkan Pesanan. Tablet mengirim HTTP POST ke Restaurant. Setelah status update di internal resto, Restaurant menerbitkan event FoodIsPreparingEvent ke Message Broker.
 
 Nomor 6 Penugasab kurir
-Aktor & Komponen: Message Broker -> Delivery -> Aplikasi Kurir
-
-Jenis Komunikasi: Asinkron
-
-Eksekusi:
-Delivery menangkap event FoodIsPreparingEvent dari broker. Tanpa perlu tahu apa yang terjadi di Order atau Payment, Delivery langsung menjalankan algoritmanya untuk mencocokkan lokasi resto dengan kurir terdekat. Begitu ada kurir yang menerima, Delivery melempar event CourierAssignedEvent.
+- Aktor & Komponen: Message Broker -> Delivery -> Aplikasi Kurir
+- Jenis Komunikasi: Asinkron
+- Eksekusi: Delivery menangkap event FoodIsPreparingEvent dari broker. Tanpa perlu tahu apa yang terjadi di Order atau Payment, Delivery langsung menjalankan algoritmanya untuk mencocokkan lokasi resto dengan kurir terdekat. Begitu ada kurir yang menerima, Delivery melempar event CourierAssignedEvent.
