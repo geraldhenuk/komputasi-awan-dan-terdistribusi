@@ -48,7 +48,7 @@ Nomor 6 Penugasab kurir
 - Jenis Komunikasi: Asinkron
 - Eksekusi: Delivery menangkap event FoodIsPreparingEvent dari broker. Tanpa perlu tahu apa yang terjadi di Order atau Payment, Delivery langsung menjalankan algoritmanya untuk mencocokkan lokasi resto dengan kurir terdekat. Begitu ada kurir yang menerima, Delivery melempar event CourierAssignedEvent.
 
-4. Analisis tertulis: kenapa gaya ini mengatasi masalah coupling dari Tugas 1, dan apa trade-off-nya (mis. Pub-Sub menambah kompleksitas debugging karena alur tidak linear).
+## 4. Analisis tertulis: kenapa gaya ini mengatasi masalah coupling dari Tugas 1, dan apa trade-off-nya (mis. Pub-Sub menambah kompleksitas debugging karena alur tidak linear).
 
 Masalah coupling dari Tugas 1
 - Deployment Independen: Tim kurir atau resto bisa memperbarui service mereka tanpa perlu menghentikan (restart) Service Pesanan atau Pembayaran. Risk downtime total dapat dihindari.
