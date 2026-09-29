@@ -43,7 +43,7 @@ graph LR
 
 ## Jawaban
 
-3. Alur Skenario
+## 3. Alur Skenario
 Nomor 1 Checkout
 - Aktor & Komponen: Aplikasi User -> API Gateway -> Order
 - Jenis Komunikasi: Sinkron
