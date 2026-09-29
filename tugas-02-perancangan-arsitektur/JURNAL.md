@@ -27,3 +27,28 @@ Nomor 2 Pembayaran
 - Jenis Komunikasi: Sinkron
 - Eksekusi: User mengonfirmasi pembayaran dari aplikasi. Payment meneruskan request ini ke API pihak ketiga (Bank/E-Wallet).
 - Penanganan Masalah: Dipasang pola Circuit Breaker dan timeout. Jika API bank lemot, Payment langsung melempar respons error ke user tanpa membuat server habis karena menunggu koneksi gantung.
+
+Nomor 3 Konfirmasi Pembayaran
+- Aktor & Komponen: Payment -> Message Broker
+- Jenis Komunikasi: Asinkron
+- Eksekusi: Begitu Bank mengonfirmasi bayar sukses, Payment tidak pernah memanggil API Order secara langsung. Payment hanya melempar satu event ke Message Broker: OrderPaidEvent yang berisi order_id, user_id, dan timestamp. Tugas Payment selesai di sini.
+
+Nomor 4 Notifikasi
+- Aktor & Komponen: Message Broker -> Order & Restaurant -> Tablet Resto
+- Jenis Komunikasi: Asinkron
+- Eksekusi: Order yang mendengarkan event OrderPaidEvent langsung memperbarui status pesanan di database-nya menjadi PAID. Disaat bersamaan, Restaurant mengambil data pesanan, lalu mengontak tablet restoran secara langsung.
+
+Nomor 5 Restoran siapkan makanan
+Aktor & Komponen: Tablet Resto -> Restaurant -> Message Broker
+
+Jenis Komunikasi: Sinkron lalu asinkron 
+
+Eksekusi: Koki menekan tombol Terima & Siapkan Pesanan. Tablet mengirim HTTP POST ke Restaurant. Setelah status update di internal resto, Restaurant menerbitkan event FoodIsPreparingEvent ke Message Broker.
+
+Nomor 6 Penugasab kurir
+Aktor & Komponen: Message Broker -> Delivery -> Aplikasi Kurir
+
+Jenis Komunikasi: Asinkron
+
+Eksekusi:
+Delivery menangkap event FoodIsPreparingEvent dari broker. Tanpa perlu tahu apa yang terjadi di Order atau Payment, Delivery langsung menjalankan algoritmanya untuk mencocokkan lokasi resto dengan kurir terdekat. Begitu ada kurir yang menerima, Delivery melempar event CourierAssignedEvent.
