@@ -47,6 +47,13 @@ Dashboard manajemen RabbitMQ (untuk lihat antrean secara visual) otomatis aktif 
 2. Buktikan program benar-benar berjalan (screenshot 2 terminal berdampingan, atau video).
 3. Untuk Jalur B, matikan dulu `consumer.py`, jalankan `publisher.py` beberapa kali, lalu nyalakan `consumer.py` — buktikan pesan **tetap diproses** (tidak hilang) karena antrean menyimpannya. Ini adalah inti pembelajaran *asynchronous decoupling*.
 4. Tulis analisis: kenapa jalur ini (RPC atau MQ) cocok untuk skenario yang kalian pilih, dan apa yang terjadi jika dipakai untuk skenario yang salah (mis. RPC dipakai untuk notifikasi kurir → modul pembayaran ikut lambat kalau kurir down).
+    ## Analisis Jalur A - RPC (Farisa)
+    Kami memilih RPC untuk operasi `cek_saldo` dan `proses_pembayaran`, dikarenakan kedua operasi ini membutuhkan proses seketika (sinkron). Modul Pesanan harus mengetahui apakah saldo cukup dan apakah pembayaran sukses/gagal sebelum lanjut ke tahap selanjutnya.
+
+    Jika server mati, client akan menerima `ConnectionRefusedError` dan transaksi tidak diproses. Jika server mati di tengah proses, client tidak mengetahui apakah transaksi sudah terjadi atau belum, ini sebuah risiko RPC dan butuh mekanisme retry + idempotency.
+
+    RPC tidak cocok untuk notifikasi kurir. Kalau pakai RPC, modul Pembayaran harus nunggu kurir. Kalau kurir down, Pembayaran ikut lambat. Untuk notifikasi, MQ lebih cocok karena asinkron (Lihat jalur B).
+
 
 ## Struktur Submission
 
