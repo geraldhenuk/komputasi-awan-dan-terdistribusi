@@ -54,6 +54,9 @@ Dashboard manajemen RabbitMQ (untuk lihat antrean secara visual) otomatis aktif 
 
     RPC tidak cocok untuk notifikasi kurir. Kalau pakai RPC, modul Pembayaran harus nunggu kurir. Kalau kurir down, Pembayaran ikut lambat. Untuk notifikasi, MQ lebih cocok karena asinkron (Lihat jalur B).
 
+    ## Analisis Jalur B - MQ (Gerald)
+    
+
 
 ## Struktur Submission
 
