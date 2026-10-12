@@ -15,7 +15,7 @@
 
 ## Uji "pesan tidak hilang" (khusus Jalur B)
 - Langkah uji: matikan consumer → jalankan publisher → nyalakan consumer
-- Hasil yang diamati: ...
+- Hasil yang diamati: Saat consumer dinyalakan, modul kurir langsung memproses (mencetak ke layar) ketiga event `pembayaran_berhasil` tersebut sekaligus secara berurutan. Pesan-pesan yang dikirim saat consumer mati "hilang sementara" dari terminal, namun nyatanya disimpan dengan aman di dalam *Queue* pada *broker* RabbitMQ. Ini membuktikan keberhasilan sistem *asynchronous decoupling*.
 
 ## Log Penggunaan AI (Level 2)
 
