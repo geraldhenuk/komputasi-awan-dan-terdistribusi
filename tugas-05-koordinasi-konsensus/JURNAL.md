@@ -11,7 +11,7 @@
 - Leader yang terpilih: Node 5 
 - Log/observasi: Saat dijalankan mulai dari Node 1 (port 5001) hingga Node 4 (port 5004), masing-masing node memulai election ke peer yang lebih tinggi (misalnya Node 1 ke [2, 3, 4, 5], Node 2 ke [3, 4, 5], Node 3 ke [4, 5], dan Node 4 ke [5]).   
 
-## Skenario 2: Leader dimatikan
+## Skenario 2: Leader dimatikan ( Fito )
 - Leader baru yang terpilih: Node 4
 - Berapa lama waktu sampai leader baru terdeteksi: Sebentar saja, langsung ketahuan setelah batas waktu tunggu (timeout) habis. Node 1, 2, 3, dan 4 sadar hampir bebarengan kalau Node 5 sudah tidak merespons, lalu mereka langsung mulai pemilihan baru.
 
