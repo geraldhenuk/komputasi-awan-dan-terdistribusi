@@ -21,4 +21,4 @@
 
 | Tanggal | Tool AI | Prompt yang diberikan | Ringkasan saran/ide AI | Bagaimana diolah jadi tulisan/kode sendiri |
 |20/10/2026|Gemini|Apa saja poin-poin kendala teknis yang umum terjadi saat menjalankan simulasi Bully Algorithm menggunakan beberapa proses socket TCP lokal?|menyebutkan beberapa poin konsep seperti perbedaan waktu nyala terminal (startup timing), pemilihan ulang beruntun (cascading election), dan penentuan durasi timeout socket.|Mencocokkan poin-poin ide tersebut dengan kejadian nyata pada screenshot terminal Node 1–5, lalu menuliskannya kembali menjadi analisis di bagian kendala dan observasi Jurnal Proses|
-| ... | ... | ... | ... | ... |
+|20/10/2026 | Gemini | Bagaimana urutan alur logika (outline) tahapan pemilihan leader pada Bully Algorithm saat node baru menyala dan saat mendeteksi leader mati? | memberikan outline tahapan pengiriman pesan ELECTION ke peer ber-ID lebih besar, mekanisme tunggu balasan OK dengan timeout, serta kondisi kapan node mem-broadcast pesan COORDINATOR. | Memahami konsep alur tersebut lalu menerjemahkannya sendiri ke dalam baris kode Python pada bagian # TODO 1-4 di file src/node.py. |
