@@ -14,4 +14,5 @@
 
 | Tanggal | Tool AI | Prompt yang diberikan | Ringkasan saran/ide AI | Bagaimana diolah jadi tulisan/kode sendiri |
 |---|---|---|---|---|
+| 26 Oktober 2026 | ChatGPT | Membantu memahami struktur kode Chord DHT dan logika successor | Memberikan pandua kerangka logika 'find_successor' dengan *wrap-around* dan aturan *consistent hashing* | Menggunakan konsep tersebut untuk menyusun implementasi 'join', 'leave' dan 'find_successor' pada code python tugas |
 | ... | ... | ... | ... | ... |
