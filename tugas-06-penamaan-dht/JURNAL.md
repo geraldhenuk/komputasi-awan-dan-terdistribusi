@@ -6,9 +6,11 @@
 ## Skenario join/leave
 - Hasil sebelum & sesudah node baru bergabung: 
 Sebelum: kurir-001 (hash=50) dipegang Node 102, terus kurir-002 (hash=28) dipegang Node 40. 
+
 Sesudah: Pas node-medan-1 (id=123) baru masuk, data hash 50 sama 28 otomatis dipindahin ke node-medan-1 karena ID 123 jadi penanggung jawab terdekat yang paling pas. 
 - Hasil sebelum & sesudah node keluar: 
 Sebelum: node-jakarta-1 (id=177) masih aktif di ring dan nyimpen data mapping.
+
 Sesudah: - Pas node-jakarta-1 (id=177) keluar, semua datanya langsung dioper ke Node 40 sebagai penerus di ring. Pas nyari IP kurir-001 sama kurir-002 lagi, nilainya tetep dapet dan gak ada data yang hilang.
 
 ## Log Penggunaan AI (Level 2)
