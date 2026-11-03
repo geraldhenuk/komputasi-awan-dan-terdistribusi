@@ -30,6 +30,43 @@ python3 src/chord_simulation.py
 2. Gambarkan (boleh pakai Mermaid, lihat Tugas 2) ring topology dari simulasi kalian, tandai node mana yang bertanggung jawab atas ID Kurir mana.
 3. Jelaskan apa yang terjadi pada mapping saat sebuah node **keluar** dari ring (siapa yang mengambil alih tanggung jawabnya) — dukung dengan output program.
 
+## Jawab
+1. Perbandingan DHT/Chord dengan Flat Naming dan DNS Konvensional
+Penggunaan DHT/Chord jauh lebih cocok untuk pelacakan IP kurir dibandingkan flat naming berbasis tabel pusat maupun DNS konvensional. Tabel pusat memiliki kelemahan fatal berupa Single Point of Failure (SPOF); apabila server pusat mati, maka seluruh proses lookup IP kurir akan gagal total. Selain itu, server pusat rentan menjadi bottleneck saat volume permintaan tinggi.
+
+Di sisi lain, DNS konvensional dirancang untuk pemetaan domain ke IP yang sifatnya relatif statis dan mengandalkan sistem caching berjenjang (TTL). Pada kasus kurir di mana alamat IP sering berubah-ubah secara dinamis saat berpindah jaringan, DNS akan menghadapi kendala stale cache jika TTL terlalu lama, atau kelebihan beban kueri jika TTL dibuat terlalu singkat.
+
+Chord DHT menyelesaikan kedua masalah tersebut karena bekerja secara terdesentralisasi tanpa server pusat. Setiap node saling membagi beban pemetaan menggunakan consistent hashing. Ketika kurir memperbarui IP-nya, pembaruan langsung disimpan pada node penanggung jawab hash ID kurir tersebut, sehingga data IP terbaru dapat langsung ditemukan dengan cepat tanpa risiko kegagalan sistem terpusat.
+
+2. Ring Topology Diagram
+````markdown
+```mermaid
+graph TD
+    Kurir2(kurir-002 hash 28) -.-> Bandung[node-bandung-1 ID 40]
+    Kurir1(kurir-001 hash 50) -.-> Jakarta2[node-jakarta-2 ID 102]
+    Kurir3(kurir-003 hash 132) -.-> Surabaya[node-surabaya-1 ID 136]
+
+    Bandung --> Jakarta2
+    Jakarta2 --> Medan[node-medan-1 ID 123]
+    Medan --> Surabaya
+    Surabaya --> Jakarta1[node-jakarta-1 ID 177]
+    Jakarta1 --> Bandung
+```
+````
+
+3. Perpindahan Mapping saat Node Keluar 
+Ketika sebuah node keluar dari ring secara normal, node tersebut harus memindahkan seluruh data dan tanggung jawab key yang dimilikinya ke successor langsungnya, yaitu node aktif berikutnya yang berada searah jarum jam pada ring identifier.
+
+Hal ini terbukti dari log eksekusi terminal ketika node-jakarta-1 (id=177) keluar dari ring:
+```markdown
+--- Sebuah node keluar ---
+[MIGRASI] Data dari node 'node-jakarta-1' (id=177) dialihkan ke successor id=40
+[TODO] Node 'node-jakarta-1' (id=177) keluar dari ring
+kurir-001 -> 192.168.1.10
+kurir-002 -> 192.168.1.11
+```
+
+Karena urutan identifier bersifat melingkar (wrap-around setelah 255 kembali ke 0), node aktif pertama setelah id=177 adalah node-bandung-1 dengan id=40. Oleh sebab itu, seluruh tanggung jawab data dari node-jakarta-1 langsung dialihkan ke node id=40. Mekanisme migrasi ini memastikan lookup terhadap kurir-001 dan kurir-002 tetap berhasil mengembalikan IP yang benar tanpa terjadi kehilangan data (data loss).
 ## Struktur Submission
 
 ```
