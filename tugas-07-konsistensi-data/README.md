@@ -11,6 +11,7 @@ Data saldo *e-wallet* pelanggan FoodGo berbeda antara server wilayah **Jakarta**
 ### Bagian 1 — Analisis (wajib)
 
 1. Tentukan: apakah kasus ini **membutuhkan Sequential Consistency** (semua replika melihat urutan operasi yang sama) atau **cukup Eventual Consistency** (replika akan konsisten "pada akhirnya", boleh sementara berbeda)? Berikan argumen berbasis dampak bisnis (mis. kasus saldo *e-wallet* jauh lebih sensitif dibanding kasus "jumlah like" di media sosial).
+
 Untuk kasus saldo *e-wallet* **tidak cukup** jika hanya bergantung pada *Eventual Consistency* biasa.
 - **Argumen Dampak Bisnis:** Saldo uang digital bersifat sangat sensitif langsung berdampak finansial dan kenyamanan user. kalau pakai *Eventual Consistency* biasa tanpa pengamanan tambahan, pas server *delay* sinkron, saldo user bisa-bisa kebaca 0 atau belum nambah padahal dia baru aja *top-up*. Akibatnya? Transaksi pesan makanannya bisa ditolak sama sistem. Pastinya bikin user kesal dan kapok pakai aplikasinya.
 - **Solusi yang Dipilih:** Makanya, sistem ini butuh pendekatan **Client-Centric Consistency**, khususnya konsep **Read-Your-Writes**. Jadi, begitu user selesai melakukan *write* (alias *top-up* saldo), sistem bakal mastiin kalau user itu sendiri *bakal langsung* melihat saldo terbarunya dengan akurat di aplikasinya, gak peduli server wilayah lain udah kelar sinkron atau belum.
