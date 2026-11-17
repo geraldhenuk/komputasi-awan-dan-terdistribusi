@@ -21,6 +21,84 @@ Untuk kasus saldo *e-wallet* **tidak cukup** jika hanya bergantung pada *Eventua
 
 3. Gambarkan **diagram alir urutan (sequence diagram)** yang menunjukkan operasi read/write antara pelanggan, server Jakarta, server Bandung, dan proses replikasi — untuk skenario **tanpa** jaminan konsistensi (bug terjadi) DAN skenario **dengan** solusi yang kalian usulkan (bug teratasi). Pakai Mermaid (`sequenceDiagram`) di `README.md` — lihat contoh cara pakai di Tugas 2.
 
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Pelanggan
+    participant JKT as Server Jakarta
+    participant REP as Proses Replikasi
+    participant BDG as Server Bandung
+
+    Note over Pelanggan, BDG: Kondisi Awal: Saldo user1 = 0.0 (versi 0)
+
+    Pelanggan->>JKT: top_up("user1", 50000)
+    activate JKT
+    JKT->>JKT: WRITE saldo user1 = 50000.0 (versi 1)
+    JKT-->>REP: Jadwalkan replikasi asinkron (delay 2.0s)
+    JKT-->>Pelanggan: Sukses (versi_terakhir = 1)
+    deactivate JKT
+
+    activate REP
+    Note over REP: Menunggu REPLICATION_DELAY (2.0 detik)...
+
+    rect rgba(255, 0, 0, 0.1)
+        Note over Pelanggan, BDG: Setelah 0.5 detik (sebelum replikasi selesai)
+        Pelanggan->>BDG: baca_saldo_naif("user1", "Bandung")
+        activate BDG
+        BDG-->>Pelanggan: Return saldo = 0.0 (BUG: Stale Read!)
+        deactivate BDG
+    end
+
+    REP->>BDG: Replikasi tertunda: WRITE saldo user1 = 50000.0 (versi 1)
+    activate BDG
+    BDG->>BDG: Update data lokal (versi 1)
+    deactivate BDG
+    deactivate REP
+```
+
+---
+
+### 2. Skenario Dengan Solusi (`baca_saldo_read_your_writes` — Bug Teratasi)
+Pelanggan menyertakan parameter `versi_minimal` (`versi_terakhir`) saat meminta data ke Server Bandung. Jika versi data pada Server Bandung masih lebih kecil dari `versi_minimal`, fungsi `baca_saldo_read_your_writes` akan melakukan *polling* (menunggu) hingga proses replikasi selesai memperbarui data di Server Bandung, barulah saldo yang akurat dikembalikan.
+
+````markdown
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Pelanggan
+    participant JKT as Server Jakarta
+    participant REP as Proses Replikasi
+    participant BDG as Server Bandung
+
+    Note over Pelanggan, BDG: Kondisi Awal: Saldo user1 = 50000.0 (versi 1)
+
+    Pelanggan->>JKT: top_up("user1", 20000)
+    activate JKT
+    JKT->>JKT: WRITE saldo user1 = 70000.0 (versi 2)
+    JKT-->>REP: Jadwalkan replikasi asinkron (delay 2.0s)
+    JKT-->>Pelanggan: Sukses (versi_terakhir = 2)
+    deactivate JKT
+
+    activate REP
+    Pelanggan->>BDG: baca_saldo_read_your_writes("user1", "Bandung", versi_minimal=2)
+    activate BDG
+
+    rect rgba(0, 200, 100, 0.1)
+        Note over BDG: Cek versi lokal (versi 1 < versi_minimal 2)
+        loop Polling hingga versi_bandung >= 2
+            BDG->>BDG: Tunggu replikasi selesai...
+        end
+
+        REP->>BDG: WRITE saldo user1 = 70000.0 (versi 2)
+        BDG->>BDG: Update data lokal (versi 2 >= versi_minimal 2)
+    end
+
+    BDG-->>Pelanggan: Return saldo = 70000.0 (Konsisten / Bug Teratasi!)
+    deactivate BDG
+    deactivate REP
+```
+````
+
 ### Bagian 2 — Simulasi (opsional, nilai tambah)
 
 Skeleton `src/replica_simulation.py` mensimulasikan dua replika (Jakarta & Bandung) dengan delay replikasi buatan. Lengkapi TODO untuk:
