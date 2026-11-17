@@ -61,7 +61,6 @@ sequenceDiagram
 ### 2. Skenario Dengan Solusi (`baca_saldo_read_your_writes` — Bug Teratasi)
 Pelanggan menyertakan parameter `versi_minimal` (`versi_terakhir`) saat meminta data ke Server Bandung. Jika versi data pada Server Bandung masih lebih kecil dari `versi_minimal`, fungsi `baca_saldo_read_your_writes` akan melakukan *polling* (menunggu) hingga proses replikasi selesai memperbarui data di Server Bandung, barulah saldo yang akurat dikembalikan.
 
-````markdown
 ```mermaid
 sequenceDiagram
     autonumber
@@ -97,7 +96,6 @@ sequenceDiagram
     deactivate BDG
     deactivate REP
 ```
-````
 
 ### Bagian 2 — Simulasi (opsional, nilai tambah)
 
