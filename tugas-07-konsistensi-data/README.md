@@ -11,7 +11,14 @@ Data saldo *e-wallet* pelanggan FoodGo berbeda antara server wilayah **Jakarta**
 ### Bagian 1 — Analisis (wajib)
 
 1. Tentukan: apakah kasus ini **membutuhkan Sequential Consistency** (semua replika melihat urutan operasi yang sama) atau **cukup Eventual Consistency** (replika akan konsisten "pada akhirnya", boleh sementara berbeda)? Berikan argumen berbasis dampak bisnis (mis. kasus saldo *e-wallet* jauh lebih sensitif dibanding kasus "jumlah like" di media sosial).
+Untuk kasus saldo *e-wallet* **tidak cukup** jika hanya bergantung pada *Eventual Consistency* biasa.
+- **Argumen Dampak Bisnis:** Saldo uang digital bersifat sangat sensitif langsung berdampak finansial dan kenyamanan user. kalau pakai *Eventual Consistency* biasa tanpa pengamanan tambahan, pas server *delay* sinkron, saldo user bisa-bisa kebaca 0 atau belum nambah padahal dia baru aja *top-up*. Akibatnya? Transaksi pesan makanannya bisa ditolak sama sistem. Pastinya bikin user kesal dan kapok pakai aplikasinya.
+- **Solusi yang Dipilih:** Makanya, sistem ini butuh pendekatan **Client-Centric Consistency**, khususnya konsep **Read-Your-Writes**. Jadi, begitu user selesai melakukan *write* (alias *top-up* saldo), sistem bakal mastiin kalau user itu sendiri *bakal langsung* melihat saldo terbarunya dengan akurat di aplikasinya, gak peduli server wilayah lain udah kelar sinkron atau belum.
+
 2. Jika kalian menyimpulkan Eventual Consistency saja **tidak cukup** untuk skenario ini, usulkan pendekatan **Client-Centric Consistency** yang relevan (mis. *Read-Your-Writes*: pelanggan yang baru top-up harus selalu melihat saldo terbarunya sendiri, walau replika lain belum sinkron).
+- **Kasus:** Fitur "Riwayat Pendapatan & Saldo Driver" di aplikasi ojek online *RideFast*. Pas seorang driver baru aja nyelesaiin orderan, duit pendapatannya dicatat dulu ke server pusat (Jakarta), terus data posisinya bakal di-update ke server regional terdekat.
+- **Model Konsistensi yang Tepat:** Kita butuh gabungan **Sequential Consistency** buat ngeberesin urutan transaksi finansial *driver* biar datanya gak "macet" atau dobel, ditambah **Read-Your-Writes** khusus di aplikasi *driver*-nya supaya pendapatan yang baru masuk bisa langsung kelihatan pas si *driver* ngecek saldo dompetnya sendiri secara real-time.
+
 3. Gambarkan **diagram alir urutan (sequence diagram)** yang menunjukkan operasi read/write antara pelanggan, server Jakarta, server Bandung, dan proses replikasi — untuk skenario **tanpa** jaminan konsistensi (bug terjadi) DAN skenario **dengan** solusi yang kalian usulkan (bug teratasi). Pakai Mermaid (`sequenceDiagram`) di `README.md` — lihat contoh cara pakai di Tugas 2.
 
 ### Bagian 2 — Simulasi (opsional, nilai tambah)

@@ -13,4 +13,5 @@
 
 | Tanggal | Tool AI | Prompt yang diberikan | Ringkasan saran/ide AI | Bagaimana diolah jadi tulisan/kode sendiri |
 |---|---|---|---|---|
+| 17 Nov 2026 | ChatGPT | "Bagaimana cara kerja dasar konsistensi Read-Your-Writes pada sistem terdistribusi?" | Dijelaskan konsep pelacakan versi klien (*client's last write version*). | Digunakan sebagai referensi konseptual untuk menyusun argumen bisnis di README.md dan melengkapi logika versioning di skrip simulasi. |
 | ... | ... | ... | ... | ... |
